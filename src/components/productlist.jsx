@@ -1,31 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { data } from '../data';
 import { Link, useParams } from 'react-router-dom';
+import { productServices } from '../services/products';
+
 
 export const Productlist = () => {
-    const [products, setProducts] = useState([])
+
+  const [products, setProducts] = useState([]);
   const { id } = useParams();
 
-  const getProducts = () =>{
-    return new Promise ((resolve)=>{
-      setTimeout(()=>{
-        resolve(data)
-      }, 300)
-    })
-  }
-
   useEffect(() => {
-    getProducts().then((res)=>{
-      if(id){
-         // Filtra los productos por la categoría seleccionada
-        setProducts(res.filter((item)=> item.brand === id))
-      }else{
-        //No existe el filtro trae toda la data
-        setProducts(res)
+    productServices.getProducts().then((res) => {
+      if (id) {
+        // Filtra los productos por la categoría seleccionada
+        setProducts(res.filter((item) => item.brand === id));
+      } else {
+        // No existe el filtro, trae toda la data
+        setProducts(res);
       }
-    })
-    //Se deja al useEffect a la escucha del cambio de categorias
-  },[id])
+    });
+    // Se deja al useEffect a la escucha del cambio de categorías
+  }, [id]);
   return (
     <> 
     <div className='portada'>
@@ -36,7 +30,8 @@ export const Productlist = () => {
     <h3 className='productcontainerheader'>Shop Now</h3>
     <div className="productcontainer">
       {products.map(product => (
-        <Link to={`/product/${product.id}`}><div className="product" key={product.id}>
+        <Link to={`/product/${product.id}`} key={product.id}>
+          <div className="product" key={product.id}>
           <img src={product.urlImage} alt={product.nameproduct} />
           <div className="productdetails">
             <p className="info-product">

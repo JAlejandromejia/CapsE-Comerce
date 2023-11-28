@@ -1,11 +1,13 @@
-import React, {useState} from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faOpencart } from '@fortawesome/free-brands-svg-icons';
 import { Carrito } from '../components/carrito';
+import { CartContext } from '../context/cartcontext';
 
-export const Navbar = ({ carrito, quitarDelCarrito }) => {
-  const [isCarritoAbierto, setIsCarritoAbierto] = useState(false);
+export const Navbar = () => {
+  const { carrito, quitarDelCarrito } = useContext(CartContext);
+  const [isCarritoAbierto, setIsCarritoAbierto] = useState(false); 
 
   const abrirCarrito = () => {
     setIsCarritoAbierto(true);
@@ -39,7 +41,12 @@ export const Navbar = ({ carrito, quitarDelCarrito }) => {
         </ul>
       </nav>
       {isCarritoAbierto && (
-        <Carrito carrito={carrito} cerrarCarrito={cerrarCarrito} quitarDelCarrito={quitarDelCarrito} />
+        <Carrito
+          carrito={carrito}
+          cerrarCarrito={cerrarCarrito}
+          quitarDelCarrito={quitarDelCarrito}
+          setIsCarritoAbierto={setIsCarritoAbierto} 
+        />
       )}
     </div>
   )

@@ -1,25 +1,24 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import {data} from '../data';
+import {ItemCounter} from './itemcounter';
+import { productServices } from '../services/products';
+import { CartContext } from '../context/cartcontext';
 
-export const ProductDetail = ({ agregarAlCarrito }) => {
+export const ProductDetail = () => {
+  const { agregarAlCarrito } = useContext(CartContext);
   const[product,setProduct] = useState({})
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const getOneProduct = (productId) => {
-    return new Promise ((resolve) => {
-      setTimeout(() => {
-        resolve(data.find((product) => product.id === productId))
-      }, 300)
-    })
-  }
   useEffect(() => {
-    getOneProduct(id)
-    .then((res) => setProduct(res))
-  }, [id])
+    productServices.getProduct(id).then((res) => setProduct(res));
+  }, [id]);
 
   if (!product) {
-    return <div>No se encontro el producto</div>
+    return <div>No se encontró el producto</div>;
+  }
+
+  const handleAddToCart = (quantity) => {
+    agregarAlCarrito({ ...product, quantity });
   };
 
   return (
@@ -31,7 +30,7 @@ export const ProductDetail = ({ agregarAlCarrito }) => {
         <p className='detallesdeproductonombre'>{product.brand} - {product.nameproduct}</p>
         <p className='detallesdeproductosize'>{product.size}</p>
         <p className='detallesdeproductoprecio'>${product.price}</p>
-        <button onClick={() => agregarAlCarrito(product)}>Agregar al carrito</button>
+        <ItemCounter onAddToCart={(quantity) => handleAddToCart(quantity)} />
       </div>
     </div>
     </>

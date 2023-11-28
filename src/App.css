@@ -292,3 +292,33 @@ button:hover{
     right: 0;
   }
 }
+
+.item-counter {
+  display: flex;
+  justify-content: center;
+}
+
+.item-counter-button {
+  width: 40px; /* Ancho específico para los botones '+' y '-' */
+  height: 24px;
+  background-color: #f0f0f0;
+  color: black;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.item-counter-button:hover {
+  background-color: black;
+  color: #f0f0f0;
+}
+
+.item-counter span {
+  width: 20px; 
+  text-align: center;
+}
+
+.item-counter-addtocart {
+  width: 170px; 
+  margin-left: 20px;
+}
